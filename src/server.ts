@@ -236,9 +236,12 @@ const messagesFn = async (c: Context) => {
     if (
       !body.system?.[0]?.text?.includes(
         "You are Claude Code, Anthropic's official CLI for Claude.",
-      ) && body.messages
+      ) &&
+      body.messages
     ) {
-      const systemMessages = body.messages.filter((msg: any) => msg.role === 'system')
+      const systemMessages = body.messages.filter(
+        (msg: any) => msg.role === 'system',
+      )
       body.messages = body.messages?.filter((msg: any) => msg.role !== 'system')
       transformToOpenAIFormat = true // not claude-code, need to transform to openai format
       if (!body.system) {
@@ -252,7 +255,7 @@ const messagesFn = async (c: Context) => {
       for (const sysMsg of systemMessages) {
         body.system.push({
           type: 'text',
-          text: sysMsg.content || ''
+          text: sysMsg.content || '',
         })
       }
 
@@ -281,7 +284,7 @@ const messagesFn = async (c: Context) => {
       'content-type': 'application/json',
       authorization: `Bearer ${oauthToken}`,
       'anthropic-beta':
-        'oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14',
+        'oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14,context-1m-2025-08-07',
       'anthropic-version': '2023-06-01',
       'user-agent': '@anthropic-ai/sdk 1.2.12 node/22.13.1',
       accept: isStreaming ? 'text/event-stream' : 'application/json',
